@@ -1,0 +1,56 @@
+clc
+clear
+
+syms y(t)
+
+outputFilePath = "../output.txt";
+file = fopen(outputFilePath, 'r');
+
+% Reads the first line which should be the coeffecients of the diff.eq.
+% Parses the line as an array of doubles
+coefficient_line = strtrim(fgetl(file));
+coefficient_array = char(strsplit(coefficient_line));
+coefficients = reshape(str2double(coefficient_array), 1, [])
+
+% Reads the second line which should be the initial conditions
+% Parses the line as an array of doubles, too.
+initial_conditions_line = strtrim(fgetl(file));
+initial_conditions_array = char(strsplit(initial_conditions_line));
+initial_conditions = reshape(str2double(initial_conditions_array), 1, [])
+
+% With the cursor position still correct,
+% Reads the rest of the file as the sampled points from C++
+sampled_values = fscanf(file, "%f%f", [2 Inf]);
+
+% Reads the file as 2 rows, INF cols.
+% Transpose for INF rows, 2 cols.
+sampled_values = transpose(sampled_values); 
+[rowC, colC] = size(sampled_values);
+
+% Generate the same diff.eq. in matlab.
+[order, ignore] = size(coefficients); % assume diff.eq. order = # of coefficients
+
+eq = diff(y, t, order);
+conditions = strings(1);
+for i = 1:order
+    diffYofi = diff(y, i - 1);
+    eq = eq + coefficients(1, i) * diffYofi;
+    conditions(1, i) = diffYofi(0) == initial_conditions(1, i);
+end
+
+diffSolution = dsolve(eq, conditions);
+
+% Handle graphs
+startTime = sampled_values(1, 1);
+endTime = sampled_values(end, 1);
+
+space = linspace(startTime, endTime, 1000);
+
+hold on
+% Plot the sampled values from the C++ code.
+
+plot(sampled_values(:,1), sampled_values(:,2))
+
+hold off
+% Finalize application.
+fclose(file);

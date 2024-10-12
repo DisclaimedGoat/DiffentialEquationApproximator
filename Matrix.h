@@ -5,7 +5,10 @@
 // Represents a matrix object with size m*n.
 struct Matrix {
 private:
+    // The size of the matrix. Unchanging
     const uint _sizeM, _sizeN;
+
+    // 2D vector pointer that stores the contents of the matrix.
     vector<vector<double>> *_matrix;
 
 public:
@@ -16,6 +19,7 @@ public:
     Matrix(uint sizeM, uint sizeN);
 
     template <uint sizeM, uint sizeN>
+    // Creates a matrix from a reference to a 2D array.
     Matrix(double(&arr)[sizeM][sizeN]) : _sizeM(sizeM), _sizeN(sizeN)
     {
         _matrix = new vector<vector<double>>;
@@ -47,18 +51,18 @@ public:
 
     // Creates a matrix from the sum of two matrices.
     // The matrices but be equal in dimension.
-    Matrix& operator+(Matrix &b);
+    Matrix* operator+(Matrix &b);
     
     // Creates a matrix from the difference of two matrices.
     // The matrices but be equal in dimension.
-    Matrix& operator-(Matrix &b);
+    Matrix* operator-(Matrix &b);
 
     // Creates a matrix from the product of two matrices.
     // The matrices must match the following pattern: m*n X n*p = m*p
     Matrix* operator*(Matrix &b);
 
     // Scales each value in the matrix by the given value.
-    Matrix& operator*(double scale);
+    Matrix* operator*(double scale);
 
     // Converts this matrix object into a formatted string.
     string to_string();

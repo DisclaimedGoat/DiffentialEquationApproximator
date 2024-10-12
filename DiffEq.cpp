@@ -27,7 +27,7 @@ string DiffEq::build_general_equation(uint order)
 
 Matrix DiffEq::build_approximator(double resolution)
 {
-    return *this->_identity_matrix + (*this->_A_matrix * resolution);
+    return *(*this->_identity_matrix + *(*this->_A_matrix * resolution));
 }
 
 DiffEq* DiffEq::from_input()
@@ -141,6 +141,17 @@ bool DiffEq::export_range(double start, double end, double resolution, string fi
     Matrix approximator = build_approximator(resolution);
 
     ofstream file(filepath);
+    file.clear();
+
+    // first write coefficients
+    for (double coefficient : *this->_diff_coefficients)
+        file << coefficient << " ";
+    file << endl;
+
+    // then write initial conditions
+    for (double condition : *this->_init_conditions)
+        file << condition << " ";
+    file << endl;
 
     for (double t = start; t <= end; t += resolution) {
         Matrix* temp = approximator * *y;

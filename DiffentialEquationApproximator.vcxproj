@@ -22,7 +22,7 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{24202e3b-6563-47dc-bf7b-03879519e6c8}</ProjectGuid>
-    <RootNamespace>ProgrammingAssignment1ECE3620</RootNamespace>
+    <RootNamespace>DiffentialEquationApproximator</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

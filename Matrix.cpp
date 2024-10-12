@@ -63,7 +63,7 @@ uint Matrix::get_sizen()
     return _sizeN;
 }
 
-Matrix& Matrix::operator+(Matrix &b)
+Matrix* Matrix::operator+(Matrix &b)
 {
     if (_sizeM != b._sizeM || _sizeN != b._sizeN)
         throw new invalid_argument("Matrix b must be exactly the same size to add.");
@@ -78,10 +78,10 @@ Matrix& Matrix::operator+(Matrix &b)
         }
     }
 
-    return *newMatrix;
+    return newMatrix;
 }
 
-Matrix& Matrix::operator-(Matrix& b)
+Matrix* Matrix::operator-(Matrix& b)
 {
     if (_sizeM != b._sizeM || _sizeN != b._sizeN)
         throw new invalid_argument("Matrix b must be exactly the same size to subtract.");
@@ -96,7 +96,7 @@ Matrix& Matrix::operator-(Matrix& b)
         }
     }
 
-    return *newMatrix;
+    return newMatrix;
 }
 
 Matrix* Matrix::operator*(Matrix& b)
@@ -122,7 +122,7 @@ Matrix* Matrix::operator*(Matrix& b)
     return newMatrix;
 }
 
-Matrix& Matrix::operator*(double scale)
+Matrix* Matrix::operator*(double scale)
 {
     // Create a new matrix object.
     Matrix* newMatrix = new Matrix(_sizeM, _sizeN);
@@ -135,7 +135,7 @@ Matrix& Matrix::operator*(double scale)
         }
     }
 
-    return *newMatrix;
+    return newMatrix;
 }
 
 string Matrix::to_string()
